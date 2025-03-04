@@ -1,4 +1,4 @@
-import express from "express";
+import express, { RequestHandler } from "express";
 import {
   createJob,
   getJobs,
@@ -8,9 +8,9 @@ import {
 
 const router = express.Router();
 
-router.post("/create", createJob);
-router.get("/", getJobs);
-router.put("/:id", updateJob);
-router.delete("/:id", deleteJob);
+router.post("/create", createJob as RequestHandler);
+router.get("/", getJobs as RequestHandler);
+router.put("/:id", updateJob as RequestHandler);
+router.delete("/:id", deleteJob as RequestHandler);
 
 export default router;

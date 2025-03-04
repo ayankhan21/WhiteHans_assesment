@@ -1,4 +1,4 @@
-import mongoose, { Document } from 'mongoose';
+import mongoose, { Document } from "mongoose";
 
 export interface JobDocument extends Document {
   title: string;
@@ -9,13 +9,17 @@ export interface JobDocument extends Document {
   createdAt: Date;
 }
 
-const JobSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  location: { type: String, required: true },
-  type: { type: String, required: true },
-  description: { type: String, required: true },
-  email: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now },
-});
+const JobSchema = new mongoose.Schema(
+  {
+    title: { type: String, required: true },
+    location: { type: String, required: true },
+    type: { type: String, required: true },
+    description: { type: String, required: true },
+    email: { type: String, required: true },
+  },
+  {
+    timestamps: true, // This automatically creates and updates createdAt & updatedAt
+  }
+);
 
-export default mongoose.model<JobDocument>('Job', JobSchema);
+export default mongoose.model<JobDocument>("Job", JobSchema);

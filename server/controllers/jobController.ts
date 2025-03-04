@@ -26,13 +26,35 @@ export const getJobs = async (req: Request, res: Response) => {
 };
 
 export const updateJob = async (req: Request, res: Response) => {
+  const allowedUpdates = ["title", "location", "type", "description", "email"];
+  const updates = Object.keys(req.body);
+  const isValidOperation = updates.every((update) =>
+    allowedUpdates.includes(update)
+  );
+
+  if (!isValidOperation) {
+    return res.status(400).json({ error: "Invalid updates!" });
+  }
+
   const job = await Job.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
+    runValidators: true,
   });
+
+  if (!job) {
+    return res.status(404).json({ error: "Job not found!" });
+  }
+
   res.json(job);
 };
 
 export const deleteJob = async (req: Request, res: Response) => {
-  await Job.findByIdAndDelete(req.params.id);
-  res.status(204).send();
+  const job = await Job.findById(req.params.id);
+
+  if (!job) {
+    return res.status(404).json({ error: "Job not found!" });
+  }
+
+  await job.deleteOne();
+  res.status(200).send();
 };
